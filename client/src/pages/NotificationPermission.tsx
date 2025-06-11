@@ -23,7 +23,7 @@ export default function NotificationPermission() {
     
     // Auto-proceed after showing result
     setTimeout(() => {
-      setLocation("/home");
+      setLocation("/paywall");
     }, 2000);
   };
 
@@ -40,12 +40,12 @@ export default function NotificationPermission() {
     
     // Auto-proceed after showing result
     setTimeout(() => {
-      setLocation("/home");
+      setLocation("/paywall");
     }, 2000);
   };
 
   const handleSkip = () => {
-    setLocation("/home");
+    setLocation("/paywall");
   };
 
   if (showResult) {

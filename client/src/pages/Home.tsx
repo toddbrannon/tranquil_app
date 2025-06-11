@@ -1,14 +1,31 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Smile, Brain, TrendingUp } from "lucide-react";
+import { ChevronRight, Smile, Brain, TrendingUp, Crown } from "lucide-react";
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
+
+interface PremiumStatus {
+  isPremium: boolean;
+  plan: string;
+  purchaseDate?: string;
+  declinedDate?: string;
+}
 
 export default function Home() {
+  const [premiumStatus, setPremiumStatus] = useState<PremiumStatus | null>(null);
+
   const userStats = {
     streak: 5,
     todayMinutes: 0,
     weeklyGoal: 70,
   };
+
+  useEffect(() => {
+    const stored = localStorage.getItem('premiumStatus');
+    if (stored) {
+      setPremiumStatus(JSON.parse(stored));
+    }
+  }, []);
 
   return (
     <div className="p-4 space-y-6">
@@ -44,26 +61,58 @@ export default function Home() {
         </Card>
       </div>
 
-      {/* Assessment CTA */}
-      <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Understand Your Wellness</h2>
-        <Link href="/assessment">
-          <Card className="p-4 shadow-sm bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 hover:shadow-md transition-shadow cursor-pointer">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-primary" />
+      {/* Premium CTA or Assessment */}
+      {premiumStatus && !premiumStatus.isPremium ? (
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold text-[var(--text-soft)]">Unlock Your Potential</h2>
+          <Link href="/paywall">
+            <Card className="p-4 shadow-sm bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-200 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-full flex items-center justify-center">
+                    <Crown className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-yellow-800">Upgrade to Premium</div>
+                    <div className="text-sm text-yellow-700">Unlimited assessments & premium content</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-semibold text-[var(--text-soft)]">Take Assessment</div>
-                  <div className="text-sm text-[var(--text-muted)]">10 questions • Get your wellness score</div>
-                </div>
+                <ChevronRight className="w-5 h-5 text-yellow-600" />
               </div>
-              <ChevronRight className="w-5 h-5 text-primary" />
-            </div>
-          </Card>
-        </Link>
-      </div>
+            </Card>
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-[var(--text-soft)]">Understand Your Wellness</h2>
+            {premiumStatus?.isPremium && (
+              <div className="flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-full">
+                <Crown className="w-4 h-4 text-yellow-600" />
+                <span className="text-xs font-medium text-yellow-800">Premium</span>
+              </div>
+            )}
+          </div>
+          <Link href="/assessment">
+            <Card className="p-4 shadow-sm bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 hover:shadow-md transition-shadow cursor-pointer">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Brain className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-[var(--text-soft)]">Take Assessment</div>
+                    <div className="text-sm text-[var(--text-muted)]">
+                      {premiumStatus?.isPremium ? 'Unlimited assessments' : '10 questions • Get your wellness score'}
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-primary" />
+              </div>
+            </Card>
+          </Link>
+        </div>
+      )}
 
       {/* Quick Actions */}
       <div className="space-y-3">
