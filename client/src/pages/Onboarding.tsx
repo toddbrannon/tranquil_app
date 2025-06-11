@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, Brain, Zap, Heart, Shield, Target } from "lucide-react";
 import { useLocation } from "wouter";
-import { useDrag } from "@use-gesture/react";
 
 const onboardingSlides = [
   {
@@ -46,6 +45,8 @@ const onboardingSlides = [
 export default function Onboarding() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [, setLocation] = useLocation();
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const nextSlide = () => {
     if (currentSlide < onboardingSlides.length - 1) {
@@ -63,24 +64,31 @@ export default function Onboarding() {
     setLocation("/home");
   };
 
-  // Swipe gesture handling
-  const bind = useDrag(
-    ({ direction: [dx], distance, cancel }) => {
-      if (distance > 50) {
-        if (dx > 0 && currentSlide > 0) {
-          prevSlide();
-        } else if (dx < 0 && currentSlide < onboardingSlides.length - 1) {
-          nextSlide();
-        }
-        cancel();
-      }
-    },
-    {
-      axis: 'x',
-      bounds: { left: -100, right: 100, top: 0, bottom: 0 },
-      rubberband: true,
+  // Touch handlers for swipe gestures
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentSlide < onboardingSlides.length - 1) {
+      nextSlide();
+    } else if (isRightSwipe && currentSlide > 0) {
+      prevSlide();
     }
-  );
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   const slide = onboardingSlides[currentSlide];
   const Icon = slide.icon;
@@ -104,9 +112,11 @@ export default function Onboarding() {
       {/* Slide Content */}
       <div className="flex-1 flex items-center justify-center p-6">
         <Card 
-          {...bind()}
           className="max-w-sm w-full p-8 text-center shadow-lg bg-white/80 backdrop-blur-sm touch-pan-y select-none"
           style={{ touchAction: 'pan-y' }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center ${slide.color}`}>
             <Icon className="w-12 h-12" />
