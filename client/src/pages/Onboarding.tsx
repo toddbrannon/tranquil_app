@@ -61,7 +61,7 @@ export default function Onboarding() {
   };
 
   const handleGetStarted = () => {
-    setLocation("/home");
+    setLocation("/feedback");
   };
 
   // Touch handlers for swipe gestures

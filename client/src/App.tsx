@@ -10,6 +10,8 @@ import Progress from "@/pages/Progress";
 import Profile from "@/pages/Profile";
 import Onboarding from "@/pages/Onboarding";
 import Splash from "@/pages/Splash";
+import UserFeedback from "@/pages/UserFeedback";
+import AppRating from "@/pages/AppRating";
 
 function Router() {
   return (
@@ -17,6 +19,8 @@ function Router() {
       <Switch>
         <Route path="/splash" component={Splash} />
         <Route path="/onboarding" component={Onboarding} />
+        <Route path="/feedback" component={UserFeedback} />
+        <Route path="/rating" component={AppRating} />
         <Route path="/home">
           <main className="flex-1 pb-20 overflow-y-auto">
             <Home />
