@@ -1,12 +1,43 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bell, ChevronRight, Settings, HelpCircle, LogOut } from "lucide-react";
+import { Bell, ChevronRight, Settings, HelpCircle, LogOut, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link } from "wouter";
+
+interface TimePreference {
+  hour: number;
+  minute: number;
+  period: 'AM' | 'PM';
+  displayTime: string;
+}
+
+interface NotificationPreference {
+  permission: 'granted' | 'denied';
+  timestamp: string;
+}
 
 export default function Profile() {
+  const [timePreference, setTimePreference] = useState<TimePreference | null>(null);
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPreference | null>(null);
+
   const user = {
     name: "Sarah Johnson",
     joinedDate: "Member since March 2024",
   };
+
+  useEffect(() => {
+    // Load user preferences from localStorage
+    const storedTime = localStorage.getItem('userTimePreference');
+    const storedNotification = localStorage.getItem('notificationPermission');
+    
+    if (storedTime) {
+      setTimePreference(JSON.parse(storedTime));
+    }
+    
+    if (storedNotification) {
+      setNotificationPermission(JSON.parse(storedNotification));
+    }
+  }, []);
 
   const settingsOptions = [
     {
@@ -43,6 +74,57 @@ export default function Profile() {
         <h2 className="text-xl font-semibold text-[var(--text-soft)]">{user.name}</h2>
         <p className="text-[var(--text-muted)]">{user.joinedDate}</p>
       </Card>
+
+      {/* Preferences Section */}
+      {(timePreference || notificationPermission) && (
+        <div className="space-y-3">
+          <h2 className="font-semibold text-[var(--text-soft)]">Your Preferences</h2>
+          
+          {timePreference && (
+            <Link href="/time-preference">
+              <Card className="p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="font-medium text-[var(--text-soft)]">Preferred Time</div>
+                    <div className="text-sm text-[var(--text-muted)]">{timePreference.displayTime}</div>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+              </Card>
+            </Link>
+          )}
+
+          {notificationPermission && (
+            <Link href="/notifications">
+              <Card className="p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    notificationPermission.permission === 'granted' 
+                      ? 'bg-green-100' 
+                      : 'bg-orange-100'
+                  }`}>
+                    <Bell className={`w-5 h-5 ${
+                      notificationPermission.permission === 'granted' 
+                        ? 'text-green-600' 
+                        : 'text-orange-600'
+                    }`} />
+                  </div>
+                  <div>
+                    <div className="font-medium text-[var(--text-soft)]">Notifications</div>
+                    <div className="text-sm text-[var(--text-muted)]">
+                      {notificationPermission.permission === 'granted' ? 'Enabled' : 'Disabled'}
+                    </div>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+              </Card>
+            </Link>
+          )}
+        </div>
+      )}
 
       {/* Settings Options */}
       <div className="space-y-2">

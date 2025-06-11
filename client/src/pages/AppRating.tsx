@@ -23,11 +23,11 @@ export default function AppRating() {
   };
 
   const handleContinue = () => {
-    setLocation("/home");
+    setLocation("/time-preference");
   };
 
   const handleSkip = () => {
-    setLocation("/home");
+    setLocation("/time-preference");
   };
 
   const getRatingMessage = (stars: number) => {
