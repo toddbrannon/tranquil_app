@@ -1,0 +1,63 @@
+import { Card } from "@/components/ui/card";
+import { ChevronRight, Smile } from "lucide-react";
+
+export default function Home() {
+  const userStats = {
+    streak: 5,
+    todayMinutes: 0,
+    weeklyGoal: 70,
+  };
+
+  return (
+    <div className="p-4 space-y-6">
+      {/* Hero Section */}
+      <div 
+        className="relative h-48 rounded-2xl overflow-hidden shadow-lg bg-gradient-to-br from-primary/20 to-primary/30"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(20, 184, 166, 0.2), rgba(15, 118, 110, 0.3)), url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+        <div className="absolute bottom-4 left-4 text-white">
+          <h1 className="text-2xl font-semibold">Good Morning</h1>
+          <p className="text-white/80 text-sm">Ready to start your wellness journey?</p>
+        </div>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-3 gap-3">
+        <Card className="p-4 text-center shadow-sm">
+          <div className="text-2xl font-bold text-primary">{userStats.streak}</div>
+          <div className="text-xs text-[var(--text-muted)]">Day Streak</div>
+        </Card>
+        <Card className="p-4 text-center shadow-sm">
+          <div className="text-2xl font-bold text-primary">{userStats.todayMinutes}</div>
+          <div className="text-xs text-[var(--text-muted)]">Today (min)</div>
+        </Card>
+        <Card className="p-4 text-center shadow-sm">
+          <div className="text-2xl font-bold text-primary">{userStats.weeklyGoal}%</div>
+          <div className="text-xs text-[var(--text-muted)]">Weekly Goal</div>
+        </Card>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Start Your Day</h2>
+        <Card className="p-4 shadow-sm flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <Smile className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <div className="font-medium text-[var(--text-soft)]">Morning Meditation</div>
+              <div className="text-sm text-[var(--text-muted)]">5 min • Beginner</div>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+        </Card>
+      </div>
+    </div>
+  );
+}
