@@ -12,6 +12,7 @@ import Onboarding from "@/pages/Onboarding";
 import Splash from "@/pages/Splash";
 import UserFeedback from "@/pages/UserFeedback";
 import AppRating from "@/pages/AppRating";
+import Assessment from "@/pages/Assessment";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
         <Route path="/onboarding" component={Onboarding} />
         <Route path="/feedback" component={UserFeedback} />
         <Route path="/rating" component={AppRating} />
+        <Route path="/assessment" component={Assessment} />
         <Route path="/home">
           <main className="flex-1 pb-20 overflow-y-auto">
             <Home />

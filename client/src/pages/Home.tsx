@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
-import { ChevronRight, Smile } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ChevronRight, Smile, Brain, TrendingUp } from "lucide-react";
+import { Link } from "wouter";
 
 export default function Home() {
   const userStats = {
@@ -40,6 +42,27 @@ export default function Home() {
           <div className="text-2xl font-bold text-primary">{userStats.weeklyGoal}%</div>
           <div className="text-xs text-[var(--text-muted)]">Weekly Goal</div>
         </Card>
+      </div>
+
+      {/* Assessment CTA */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Understand Your Wellness</h2>
+        <Link href="/assessment">
+          <Card className="p-4 shadow-sm bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 hover:shadow-md transition-shadow cursor-pointer">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+                  <Brain className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <div className="font-semibold text-[var(--text-soft)]">Take Assessment</div>
+                  <div className="text-sm text-[var(--text-muted)]">10 questions • Get your wellness score</div>
+                </div>
+              </div>
+              <ChevronRight className="w-5 h-5 text-primary" />
+            </div>
+          </Card>
+        </Link>
       </div>
 
       {/* Quick Actions */}
