@@ -9,21 +9,40 @@ import Exercises from "@/pages/Exercises";
 import Progress from "@/pages/Progress";
 import Profile from "@/pages/Profile";
 import Onboarding from "@/pages/Onboarding";
+import Splash from "@/pages/Splash";
 
 function Router() {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 pb-20 overflow-y-auto">
-        <Switch>
-          <Route path="/onboarding" component={Onboarding} />
-          <Route path="/home" component={Home} />
-          <Route path="/exercises" component={Exercises} />
-          <Route path="/progress" component={Progress} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/" component={Home} />
-        </Switch>
-      </main>
-      <BottomNavigation />
+      <Switch>
+        <Route path="/splash" component={Splash} />
+        <Route path="/onboarding" component={Onboarding} />
+        <Route path="/home">
+          <main className="flex-1 pb-20 overflow-y-auto">
+            <Home />
+          </main>
+          <BottomNavigation />
+        </Route>
+        <Route path="/exercises">
+          <main className="flex-1 pb-20 overflow-y-auto">
+            <Exercises />
+          </main>
+          <BottomNavigation />
+        </Route>
+        <Route path="/progress">
+          <main className="flex-1 pb-20 overflow-y-auto">
+            <Progress />
+          </main>
+          <BottomNavigation />
+        </Route>
+        <Route path="/profile">
+          <main className="flex-1 pb-20 overflow-y-auto">
+            <Profile />
+          </main>
+          <BottomNavigation />
+        </Route>
+        <Route path="/" component={Splash} />
+      </Switch>
     </div>
   );
 }
