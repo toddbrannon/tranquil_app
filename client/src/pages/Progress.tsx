@@ -331,65 +331,65 @@ export default function Progress() {
         ))}
       </div>
 
-      {/* Assessment Results */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-[var(--text-soft)]">Assessment History</h2>
+      {/* Quiz History */}
+      <Card className="p-4 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-semibold text-[var(--text-soft)]">Quiz History</h2>
           <Link href="/assessment">
             <Button size="sm" variant="outline" className="flex items-center gap-2">
               <Brain className="w-4 h-4" />
-              Take New
+              Take Assessment
             </Button>
           </Link>
         </div>
         
-        {assessmentResults.length > 0 ? (
+        {assessmentResults.length === 0 ? (
+          <div className="text-center py-6">
+            <Brain className="w-12 h-12 text-[var(--text-muted)] mx-auto mb-3" />
+            <p className="text-sm text-[var(--text-muted)]">No assessments completed yet</p>
+            <p className="text-xs text-[var(--text-muted)] mt-1">Take your first wellness assessment to begin tracking</p>
+          </div>
+        ) : (
           <div className="space-y-3">
-            {assessmentResults.slice(-3).reverse().map((result) => (
-              <Card key={result.id} className="p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                      <div className="font-medium text-[var(--text-soft)]">
-                        Score: {result.score}/100
-                      </div>
-                      <div className="text-sm text-[var(--text-muted)]">
-                        {result.category} • {new Date(result.completedAt).toLocaleDateString()}
-                      </div>
-                    </div>
+            {assessmentResults.slice().reverse().slice(0, 5).map((result, index) => (
+              <div key={result.id} className="flex items-center justify-between p-3 rounded-lg border">
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium ${
+                    result.score >= 80 ? 'bg-green-100 text-green-700' :
+                    result.score >= 60 ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700'
+                  }`}>
+                    {result.score}
                   </div>
-                  <div className="text-right">
-                    <div className="w-12 h-2 bg-gray-200 rounded-full">
-                      <div 
-                        className="h-2 bg-primary rounded-full"
-                        style={{ width: `${result.score}%` }}
-                      />
+                  <div>
+                    <div className="text-sm font-medium text-[var(--text-soft)]">
+                      Assessment #{assessmentResults.length - index}
+                    </div>
+                    <div className="text-xs text-[var(--text-muted)]">
+                      {new Date(result.completedAt).toLocaleDateString('en-US', { 
+                        month: 'short', 
+                        day: 'numeric',
+                        year: 'numeric'
+                      })}
                     </div>
                   </div>
                 </div>
-              </Card>
+                <Badge variant={result.score >= 80 ? 'default' : 'secondary'} className="text-xs">
+                  {result.score >= 80 ? 'Excellent' : result.score >= 60 ? 'Good' : 'Needs Focus'}
+                </Badge>
+              </div>
             ))}
+            
+            {assessmentResults.length > 5 && (
+              <div className="text-center pt-2">
+                <span className="text-xs text-[var(--text-muted)]">
+                  Showing 5 most recent • {assessmentResults.length} total assessments
+                </span>
+              </div>
+            )}
           </div>
-        ) : (
-          <Card className="p-6 text-center shadow-sm">
-            <div className="w-16 h-16 bg-primary/10 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <Brain className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="font-medium text-[var(--text-soft)] mb-2">No Assessments Yet</h3>
-            <p className="text-sm text-[var(--text-muted)] mb-4">
-              Take your first wellness assessment to track your nervous system health over time.
-            </p>
-            <Link href="/assessment">
-              <Button className="bg-primary text-white hover:bg-primary/90">
-                Take Assessment
-              </Button>
-            </Link>
-          </Card>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
