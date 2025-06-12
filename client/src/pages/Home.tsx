@@ -1,14 +1,27 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Smile, Brain, TrendingUp, Crown } from "lucide-react";
+import { ChevronRight, Smile, Brain, TrendingUp, Crown, Play, Lock, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
+import exercisesData from "@/data/exercises.json";
 
 interface PremiumStatus {
   isPremium: boolean;
   plan: string;
   purchaseDate?: string;
   declinedDate?: string;
+}
+
+interface Exercise {
+  id: string;
+  title: string;
+  duration: number;
+  description: string;
+  instructor: string;
+  category: string;
+  backgroundImage: string;
+  isPremium: boolean;
+  tags: string[];
 }
 
 export default function Home() {
@@ -19,6 +32,54 @@ export default function Home() {
     todayMinutes: 0,
     weeklyGoal: 70,
   };
+
+  // Filter exercises by categories
+  const suggestedExercises = exercisesData.exercises.filter((exercise: Exercise) => 
+    exercise.tags.includes('suggested')
+  ).slice(0, 3);
+
+  const popularExercises = exercisesData.exercises.filter((exercise: Exercise) => 
+    exercise.tags.includes('popular')
+  ).slice(0, 3);
+
+  // Check if user has any favorites (placeholder for now)
+  const favoriteExercises: Exercise[] = [];
+
+  // Exercise Card Component
+  const ExerciseCard = ({ exercise }: { exercise: Exercise }) => (
+    <Card className="shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+      <div className="relative">
+        <img 
+          src={exercise.backgroundImage} 
+          alt={exercise.title} 
+          className="w-full h-32 object-cover"
+        />
+        {exercise.isPremium && (
+          <div className="absolute top-2 right-2 bg-black/70 rounded-full p-1">
+            <Lock className="w-3 h-3 text-white" />
+          </div>
+        )}
+      </div>
+      <div className="p-3">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <h3 className="font-medium text-[var(--text-soft)] text-sm">{exercise.title}</h3>
+            <div className="flex items-center mt-1 text-xs text-[var(--text-muted)]">
+              <Clock className="w-3 h-3 mr-1" />
+              <span>{exercise.duration} min</span>
+            </div>
+          </div>
+          <Button
+            size="icon"
+            className="w-8 h-8 bg-primary/10 hover:bg-primary/20 text-primary ml-2"
+            variant="ghost"
+          >
+            <Play className="w-3 h-3 fill-current" />
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
 
   useEffect(() => {
     const stored = localStorage.getItem('premiumStatus');
@@ -114,24 +175,61 @@ export default function Home() {
         </div>
       )}
 
-      {/* Quick Actions */}
+      {/* Suggested For You */}
       <div className="space-y-3">
-        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Start Your Day</h2>
-        <Link href="/exercise-player">
-          <Card className="p-4 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                <Smile className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <div className="font-medium text-[var(--text-soft)]">Try Your First Exercise</div>
-                <div className="text-sm text-[var(--text-muted)]">5 min • Perfect for beginners</div>
-              </div>
+        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Suggested For You</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {suggestedExercises.map((exercise) => (
+            <div key={exercise.id}>
+              {exercise.id === 'basic-exercise' ? (
+                <Link href="/exercise-player">
+                  <ExerciseCard exercise={exercise} />
+                </Link>
+              ) : (
+                <ExerciseCard exercise={exercise} />
+              )}
             </div>
-            <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
-          </Card>
-        </Link>
+          ))}
+        </div>
       </div>
+
+      {/* Popular */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-semibold text-[var(--text-soft)]">Popular</h2>
+        <div className="grid grid-cols-2 gap-3">
+          {popularExercises.map((exercise) => (
+            <div key={exercise.id}>
+              {exercise.id === 'basic-exercise' ? (
+                <Link href="/exercise-player">
+                  <ExerciseCard exercise={exercise} />
+                </Link>
+              ) : (
+                <ExerciseCard exercise={exercise} />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Favorites (only show if user has favorites) */}
+      {favoriteExercises.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-semibold text-[var(--text-soft)]">Favorites</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {favoriteExercises.map((exercise) => (
+              <div key={exercise.id}>
+                {exercise.id === 'basic-exercise' ? (
+                  <Link href="/exercise-player">
+                    <ExerciseCard exercise={exercise} />
+                  </Link>
+                ) : (
+                  <ExerciseCard exercise={exercise} />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

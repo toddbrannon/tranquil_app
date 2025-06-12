@@ -1,0 +1,92 @@
+{
+  "exercises": [
+    {
+      "id": "basic-exercise",
+      "title": "The Basic Exercise",
+      "duration": 5,
+      "description": "Perfect introduction to nervous system regulation",
+      "instructor": "Dr. Sarah Chen",
+      "category": "beginner",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": false,
+      "tags": ["suggested", "popular"]
+    },
+    {
+      "id": "mindful-breathing",
+      "title": "Mindful Breathing",
+      "duration": 10,
+      "description": "Reduce stress with guided breathing techniques",
+      "instructor": "Dr. Michael Torres",
+      "category": "breathing",
+      "backgroundImage": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": false,
+      "tags": ["suggested", "popular"]
+    },
+    {
+      "id": "body-scan",
+      "title": "Progressive Body Scan",
+      "duration": 15,
+      "description": "Release tension through mindful body awareness",
+      "instructor": "Dr. Lisa Park",
+      "category": "meditation",
+      "backgroundImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": true,
+      "tags": ["suggested"]
+    },
+    {
+      "id": "evening-calm",
+      "title": "Evening Calm",
+      "duration": 12,
+      "description": "Wind down and prepare for restful sleep",
+      "instructor": "Dr. Emma Wilson",
+      "category": "sleep",
+      "backgroundImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": true,
+      "tags": ["popular"]
+    },
+    {
+      "id": "stress-relief",
+      "title": "Quick Stress Relief",
+      "duration": 7,
+      "description": "Immediate relief for overwhelming moments",
+      "instructor": "Dr. James Rodriguez",
+      "category": "breathing",
+      "backgroundImage": "https://images.unsplash.com/photo-1506629905621-b8c36d615d56?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": false,
+      "tags": ["popular"]
+    },
+    {
+      "id": "anxiety-support",
+      "title": "Anxiety Support Session",
+      "duration": 20,
+      "description": "Comprehensive support for anxiety management",
+      "instructor": "Dr. Sarah Chen",
+      "category": "therapy",
+      "backgroundImage": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": true,
+      "tags": ["suggested"]
+    },
+    {
+      "id": "morning-energy",
+      "title": "Morning Energy Boost",
+      "duration": 8,
+      "description": "Start your day with positive energy",
+      "instructor": "Dr. Michael Torres",
+      "category": "morning",
+      "backgroundImage": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": true,
+      "tags": ["popular"]
+    },
+    {
+      "id": "focus-enhancement",
+      "title": "Focus Enhancement",
+      "duration": 6,
+      "description": "Improve concentration and mental clarity",
+      "instructor": "Dr. Lisa Park",
+      "category": "productivity",
+      "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
+      "isPremium": false,
+      "tags": ["popular"]
+    }
+  ]
+}
