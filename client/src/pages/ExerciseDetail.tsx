@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Play, Clock, User, Lock, Star } from "lucide-react";
+import { ArrowLeft, Play, Clock, User, Lock, Star, Heart } from "lucide-react";
 import { Link, useParams } from "wouter";
+import { useState, useEffect } from "react";
 import exercisesData from "@/data/exercises.json";
+import ExercisePlayer from "@/components/ExercisePlayer";
+import { favoritesManager } from "@/lib/favorites";
 
 interface Exercise {
   id: string;
@@ -16,11 +19,61 @@ interface Exercise {
   isPremium: boolean;
   tags: string[];
   techniques: string[];
+  format: string;
+  audioUrl?: string;
+  videoUrl?: string;
+  animationType?: string;
+  slides?: Array<{
+    image: string;
+    title: string;
+    text: string;
+  }>;
+  steps?: string[];
 }
 
 export default function ExerciseDetail() {
   const { id } = useParams();
   const exercise = exercisesData.exercises.find((ex: Exercise) => ex.id === id) as Exercise;
+  const [showPlayer, setShowPlayer] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (exercise) {
+      setIsFavorite(favoritesManager.isFavorite(exercise.id));
+    }
+  }, [exercise]);
+
+  const handleToggleFavorite = () => {
+    if (exercise) {
+      const newFavoriteStatus = favoritesManager.toggleFavorite({
+        id: exercise.id,
+        title: exercise.title,
+        duration: exercise.duration,
+        instructor: exercise.instructor,
+        backgroundImage: exercise.backgroundImage
+      });
+      setIsFavorite(newFavoriteStatus);
+    }
+  };
+
+  const handleStartExercise = () => {
+    if (exercise.isPremium) return; // Block premium exercises
+    setShowPlayer(true);
+  };
+
+  const handleCompleteExercise = () => {
+    // Store completion data
+    const completions = JSON.parse(localStorage.getItem('exerciseCompletions') || '[]');
+    const newCompletion = {
+      exerciseId: exercise.id,
+      completedAt: new Date().toISOString(),
+      duration: exercise.duration
+    };
+    completions.push(newCompletion);
+    localStorage.setItem('exerciseCompletions', JSON.stringify(completions));
+    
+    setShowPlayer(false);
+  };
 
   if (!exercise) {
     return (
@@ -29,6 +82,24 @@ export default function ExerciseDetail() {
         <Link href="/exercises">
           <Button className="mt-4">Back to Exercises</Button>
         </Link>
+      </div>
+    );
+  }
+
+  if (showPlayer) {
+    return (
+      <div className="min-h-screen bg-[var(--background)] p-4">
+        <div className="max-w-2xl mx-auto">
+          <div className="mb-4">
+            <h1 className="text-xl font-semibold text-[var(--text-soft)]">{exercise.title}</h1>
+            <p className="text-[var(--text-muted)]">{exercise.instructor}</p>
+          </div>
+          <ExercisePlayer 
+            exercise={exercise}
+            onComplete={handleCompleteExercise}
+            onClose={() => setShowPlayer(false)}
+          />
+        </div>
       </div>
     );
   }

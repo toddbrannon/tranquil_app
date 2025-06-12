@@ -11,7 +11,19 @@
       "backgroundImage": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
       "isPremium": false,
       "tags": ["suggested", "popular"],
-      "techniques": ["Box Breathing", "Body Awareness", "Nervous System Regulation"]
+      "techniques": ["Box Breathing", "Body Awareness", "Nervous System Regulation"],
+      "format": "audio-only",
+      "audioUrl": "https://www.soundjay.com/misc/meditation-bell.wav",
+      "steps": [
+        "Find a comfortable seated position",
+        "Close your eyes and breathe naturally",
+        "Notice your breath without changing it",
+        "Place one hand on chest, one on belly",
+        "Breathe in for 4 counts",
+        "Hold for 4 counts",
+        "Exhale for 4 counts",
+        "Repeat this cycle mindfully"
+      ]
     },
     {
       "id": "neck-shoulder-release",
@@ -24,7 +36,19 @@
       "backgroundImage": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
       "isPremium": false,
       "tags": ["popular"],
-      "techniques": ["Gentle Stretching", "Mindful Movement", "Tension Release"]
+      "techniques": ["Gentle Stretching", "Mindful Movement", "Tension Release"],
+      "format": "audio-animation",
+      "audioUrl": "https://www.soundjay.com/misc/meditation-bell.wav",
+      "animationType": "guided-movement",
+      "steps": [
+        "Sit tall with feet flat on floor",
+        "Slowly roll shoulders backward 5 times",
+        "Gently tilt head to right, hold 10 seconds",
+        "Return to center, tilt to left, hold 10 seconds",
+        "Look down, stretching back of neck",
+        "Slowly roll head in half circles",
+        "Finish with deep shoulder shrugs"
+      ]
     },
     {
       "id": "progressive-muscle-relaxation",
@@ -37,7 +61,19 @@
       "backgroundImage": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
       "isPremium": true,
       "tags": ["suggested"],
-      "techniques": ["Progressive Relaxation", "Body Scanning", "Deep Release"]
+      "techniques": ["Progressive Relaxation", "Body Scanning", "Deep Release"],
+      "format": "video",
+      "videoUrl": "https://sample-videos.com/zip/10/mp4/sample_video.mp4",
+      "steps": [
+        "Lie down comfortably on your back",
+        "Start with your toes - tense for 5 seconds, then release",
+        "Move to your calves - tense and release",
+        "Continue with thighs, glutes, abdomen",
+        "Tense your hands into fists, then release",
+        "Tense your arms, shoulders, and neck",
+        "Scrunch your face muscles, then release",
+        "Take three deep breaths and notice the relaxation"
+      ]
     },
     {
       "id": "humming-meditation",
@@ -50,7 +86,30 @@
       "backgroundImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
       "isPremium": false,
       "tags": ["popular"],
-      "techniques": ["Vocal Toning", "Vagus Nerve Stimulation", "Sound Healing"]
+      "techniques": ["Vocal Toning", "Vagus Nerve Stimulation", "Sound Healing"],
+      "format": "slideshow",
+      "slides": [
+        {
+          "image": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+          "title": "Prepare Your Space",
+          "text": "Find a quiet, comfortable place to sit. Close your eyes and take three deep breaths."
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+          "title": "Begin Humming",
+          "text": "Take a deep breath and on the exhale, create a gentle 'mmm' sound. Feel the vibration in your chest."
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+          "title": "Focus on Vibration",
+          "text": "Continue humming for 30 seconds at a time. Notice the soothing vibrations throughout your body."
+        },
+        {
+          "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+          "title": "Complete the Practice",
+          "text": "End with three normal breaths. Notice the sense of calm and centeredness you've created."
+        }
+      ]
     },
     {
       "id": "cold-water-breathing",
@@ -63,7 +122,8 @@
       "backgroundImage": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=200",
       "isPremium": true,
       "tags": ["suggested"],
-      "techniques": ["Wim Hof Method", "Cold Adaptation", "Breath Control"]
+      "techniques": ["Wim Hof Method", "Cold Adaptation", "Breath Control"],
+      "format": "audio-only"
     },
     {
       "id": "gargling-exercise",
