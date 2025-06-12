@@ -187,9 +187,9 @@ export default function Home() {
       {/* Suggested For You */}
       <div className="space-y-3">
         <h2 className="text-lg font-semibold text-[var(--text-soft)]">Suggested For You</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 items-start">
           {suggestedExercises.map((exercise) => (
-            <div key={exercise.id}>
+            <div key={exercise.id} className="w-full">
               {exercise.id === 'basic-exercise' ? (
                 <Link href="/exercise-player">
                   <ExerciseCard exercise={exercise} />
@@ -205,9 +205,9 @@ export default function Home() {
       {/* Popular */}
       <div className="space-y-3">
         <h2 className="text-lg font-semibold text-[var(--text-soft)]">Popular</h2>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3 items-start">
           {popularExercises.map((exercise) => (
-            <div key={exercise.id}>
+            <div key={exercise.id} className="w-full">
               {exercise.id === 'basic-exercise' ? (
                 <Link href="/exercise-player">
                   <ExerciseCard exercise={exercise} />
@@ -224,9 +224,9 @@ export default function Home() {
       {favoriteExercises.length > 0 && (
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-[var(--text-soft)]">Favorites</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 items-start">
             {favoriteExercises.map((exercise) => (
-              <div key={exercise.id}>
+              <div key={exercise.id} className="w-full">
                 {exercise.id === 'basic-exercise' ? (
                   <Link href="/exercise-player">
                     <ExerciseCard exercise={exercise} />
