@@ -15,13 +15,8 @@ interface QuizResult {
 
 export default function Progress() {
   const [assessmentResults, setAssessmentResults] = useState<QuizResult[]>([]);
-
-  const weeklyStats = {
-    totalMinutes: 147,
-  };
-
-  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const weeklyData = [60, 40, 80, 30, 70, 0, 0]; // Heights in percentage
+  const [streakData, setStreakData] = useState<StreakData | null>(null);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
 
   useEffect(() => {
     // Load assessment results from localStorage
@@ -29,7 +24,40 @@ export default function Progress() {
     if (stored) {
       setAssessmentResults(JSON.parse(stored));
     }
+
+    // Load progress data
+    const progressData = progressManager.getProgressData();
+    const milestoneData = progressManager.getMilestoneProgress();
+    setStreakData(progressData);
+    setMilestones(milestoneData);
   }, []);
+
+  // Generate weekly chart data from completions
+  const getWeeklyChartData = () => {
+    if (!streakData) return [0, 0, 0, 0, 0, 0, 0];
+    
+    const today = new Date();
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay()); // Start of week (Sunday)
+    
+    const weeklyMinutes = Array(7).fill(0);
+    
+    streakData.completions.forEach(completion => {
+      const completionDate = new Date(completion.date);
+      const dayIndex = completionDate.getDay();
+      const daysSinceWeekStart = Math.floor((completionDate.getTime() - weekStart.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (daysSinceWeekStart >= 0 && daysSinceWeekStart < 7) {
+        weeklyMinutes[dayIndex] += completion.duration;
+      }
+    });
+    
+    const maxMinutes = Math.max(...weeklyMinutes, 1);
+    return weeklyMinutes.map(minutes => (minutes / maxMinutes) * 100);
+  };
+
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weeklyData = getWeeklyChartData();
 
   return (
     <div className="p-4 space-y-6">
@@ -50,33 +78,74 @@ export default function Progress() {
           ))}
         </div>
         <div className="text-center">
-          <span className="text-2xl font-bold text-primary">{weeklyStats.totalMinutes}</span>
+          <span className="text-2xl font-bold text-primary">{streakData?.weeklyMinutes || 0}</span>
           <span className="text-[var(--text-muted)] ml-1">minutes this week</span>
         </div>
       </Card>
 
-      {/* Achievements */}
-      <div className="space-y-3">
-        <h2 className="font-semibold text-[var(--text-soft)]">Recent Achievements</h2>
-        <Card className="p-4 shadow-sm flex items-center space-x-3">
-          <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-            <Star className="w-6 h-6 text-yellow-600 fill-current" />
+      {/* Stats Overview */}
+      <div className="grid grid-cols-3 gap-4">
+        <Card className="p-4 text-center">
+          <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-[var(--text-primary)]">
+            {streakData?.currentStreak || 0}
           </div>
-          <div>
-            <div className="font-medium text-[var(--text-soft)]">5-Day Streak!</div>
-            <div className="text-sm text-[var(--text-muted)]">Keep up the consistency</div>
-          </div>
+          <div className="text-xs text-[var(--text-muted)]">Day Streak</div>
         </Card>
 
-        <Card className="p-4 shadow-sm flex items-center space-x-3">
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-            <Star className="w-6 h-6 text-primary fill-current" />
+        <Card className="p-4 text-center">
+          <Clock className="w-6 h-6 text-blue-500 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-[var(--text-primary)]">
+            {streakData?.totalMinutes || 0}
           </div>
-          <div>
-            <div className="font-medium text-[var(--text-soft)]">First Meditation</div>
-            <div className="text-sm text-[var(--text-muted)]">Welcome to your wellness journey</div>
-          </div>
+          <div className="text-xs text-[var(--text-muted)]">Total Minutes</div>
         </Card>
+
+        <Card className="p-4 text-center">
+          <Target className="w-6 h-6 text-green-500 mx-auto mb-2" />
+          <div className="text-2xl font-bold text-[var(--text-primary)]">
+            {streakData?.completions.length || 0}
+          </div>
+          <div className="text-xs text-[var(--text-muted)]">Sessions</div>
+        </Card>
+      </div>
+
+      {/* Milestones */}
+      <div className="space-y-3">
+        <h2 className="font-semibold text-[var(--text-soft)]">Milestones</h2>
+        {milestones.map(milestone => (
+          <Card key={milestone.id} className="p-4 shadow-sm flex items-center space-x-3">
+            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+              milestone.achieved ? 'bg-yellow-100' : 'bg-gray-100'
+            }`}>
+              {milestone.achieved ? (
+                <Trophy className="w-6 h-6 text-yellow-600" />
+              ) : (
+                <Award className="w-6 h-6 text-gray-400" />
+              )}
+            </div>
+            <div className="flex-1">
+              <div className={`font-medium ${
+                milestone.achieved ? 'text-[var(--text-soft)]' : 'text-[var(--text-muted)]'
+              }`}>
+                {milestone.title}
+              </div>
+              <div className="text-sm text-[var(--text-muted)]">
+                {milestone.description}
+              </div>
+              {milestone.achieved && milestone.achievedDate && (
+                <div className="text-xs text-primary mt-1">
+                  Achieved {new Date(milestone.achievedDate).toLocaleDateString()}
+                </div>
+              )}
+            </div>
+            {milestone.achieved && (
+              <div className="text-green-600">
+                <Target className="w-5 h-5" />
+              </div>
+            )}
+          </Card>
+        ))}
       </div>
 
       {/* Assessment Results */}
