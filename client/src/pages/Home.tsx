@@ -4,6 +4,7 @@ import { ChevronRight, Smile, Brain, TrendingUp, Crown, Play, Lock, Clock } from
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import exercisesData from "@/data/exercises.json";
+import { favoritesManager } from "@/lib/favorites";
 
 interface PremiumStatus {
   isPremium: boolean;
@@ -42,8 +43,16 @@ export default function Home() {
     exercise.tags.includes('popular')
   ).slice(0, 3);
 
-  // Check if user has any favorites (placeholder for now)
-  const favoriteExercises: Exercise[] = [];
+  // Get user's favorite exercises
+  const [favoriteExercises, setFavoriteExercises] = useState<Exercise[]>([]);
+
+  useEffect(() => {
+    const favorites = favoritesManager.getFavorites();
+    const favoriteExerciseDetails = favorites.map(fav => 
+      exercisesData.exercises.find((ex: Exercise) => ex.id === fav.id)
+    ).filter(Boolean) as Exercise[];
+    setFavoriteExercises(favoriteExerciseDetails);
+  }, []);
 
   // Exercise Card Component
   const ExerciseCard = ({ exercise }: { exercise: Exercise }) => (

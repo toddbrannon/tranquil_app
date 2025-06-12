@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Play, Clock, User, Lock, Star, Heart } from "lucide-react";
+import { ArrowLeft, Play, Clock, User, Lock, Star, Heart, Volume2 } from "lucide-react";
 import { Link, useParams } from "wouter";
 import { useState, useEffect } from "react";
 import exercisesData from "@/data/exercises.json";
@@ -144,13 +144,23 @@ export default function ExerciseDetail() {
           </Button>
         </Link>
 
-        {/* Premium Badge */}
-        {exercise.isPremium && (
-          <div className="absolute top-4 right-4 bg-black/70 rounded-full px-3 py-1 flex items-center gap-1">
-            <Lock className="w-3 h-3 text-white" />
-            <span className="text-xs font-medium text-white">Premium</span>
-          </div>
-        )}
+        {/* Premium Badge and Favorite Button */}
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleToggleFavorite}
+            className="bg-black/70 hover:bg-black/80 text-white backdrop-blur-sm"
+          >
+            <Heart className={`w-5 h-5 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+          </Button>
+          {exercise.isPremium && (
+            <div className="bg-black/70 rounded-full px-3 py-1 flex items-center gap-1">
+              <Lock className="w-3 h-3 text-white" />
+              <span className="text-xs font-medium text-white">Premium</span>
+            </div>
+          )}
+        </div>
 
         {/* Title Overlay */}
         <div className="absolute bottom-4 left-4 right-4 text-white">
@@ -180,24 +190,47 @@ export default function ExerciseDetail() {
       <div className="p-4 space-y-6">
         {/* Play Button */}
         <div className="text-center">
-          {exercise.id === 'basic-exercise' ? (
-            <Link href="/exercise-player">
-              <Button size="lg" className="w-full max-w-sm">
-                <Play className="w-5 h-5 mr-2 fill-current" />
-                Start Exercise
-              </Button>
-            </Link>
-          ) : (
-            <Button 
-              size="lg" 
-              className="w-full max-w-sm" 
-              disabled={exercise.isPremium}
-            >
-              <Play className="w-5 h-5 mr-2 fill-current" />
-              {exercise.isPremium ? 'Premium Required' : 'Start Exercise'}
-            </Button>
-          )}
+          <Button 
+            size="lg" 
+            className="w-full max-w-sm" 
+            disabled={exercise.isPremium}
+            onClick={handleStartExercise}
+          >
+            <Play className="w-5 h-5 mr-2 fill-current" />
+            {exercise.isPremium ? 'Premium Required' : 'Start Exercise'}
+          </Button>
         </div>
+
+        {/* Format Information */}
+        <Card className="p-4">
+          <h2 className="font-semibold text-[var(--text-soft)] mb-2">Exercise Format</h2>
+          <div className="flex items-center gap-2">
+            {exercise.format === 'audio-only' && (
+              <>
+                <Volume2 className="w-4 h-4 text-primary" />
+                <span className="text-[var(--text-muted)]">Audio-only guidance</span>
+              </>
+            )}
+            {exercise.format === 'audio-animation' && (
+              <>
+                <Play className="w-4 h-4 text-primary" />
+                <span className="text-[var(--text-muted)]">Audio with animated guidance</span>
+              </>
+            )}
+            {exercise.format === 'video' && (
+              <>
+                <Play className="w-4 h-4 text-primary" />
+                <span className="text-[var(--text-muted)]">Video demonstration</span>
+              </>
+            )}
+            {exercise.format === 'slideshow' && (
+              <>
+                <Star className="w-4 h-4 text-primary" />
+                <span className="text-[var(--text-muted)]">Interactive slideshow</span>
+              </>
+            )}
+          </div>
+        </Card>
 
         {/* Description */}
         <Card className="p-4">
