@@ -39,8 +39,11 @@ export default function ExerciseCompletion() {
   useEffect(() => {
     // Get completion data from localStorage (passed from exercise player)
     const stored = localStorage.getItem('tempCompletionData');
+    console.log('ExerciseCompletion: Checking for completion data...', stored);
+    
     if (stored) {
       const data = JSON.parse(stored);
+      console.log('ExerciseCompletion: Found completion data:', data);
       setCompletionData(data);
       
       // Process completion and update progress

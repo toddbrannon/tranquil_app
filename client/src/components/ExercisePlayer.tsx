@@ -35,13 +35,18 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
   const [currentStep, setCurrentStep] = useState(0);
 
   const handleComplete = () => {
+    console.log('Exercise completion triggered for:', exercise.id);
+    
     // Store completion data temporarily for the completion screen
-    localStorage.setItem('tempCompletionData', JSON.stringify({
+    const completionData = {
       exerciseId: exercise.id,
       duration: exercise.duration
-    }));
+    };
+    localStorage.setItem('tempCompletionData', JSON.stringify(completionData));
+    console.log('Stored completion data:', completionData);
     
     // Navigate to completion screen
+    console.log('Navigating to completion screen...');
     setLocation('/exercise-complete');
     onComplete();
   };
@@ -53,10 +58,16 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
     if (isPlaying) {
       interval = setInterval(() => {
         setProgress((prev) => {
-          const newProgress = prev + (100 / (exercise.duration * 60)); // 60 seconds per minute
+          // Speed up for testing: complete in 10 seconds instead of full duration
+          const increment = 100 / 10; // Complete in 10 seconds for testing
+          const newProgress = prev + increment;
+          
           if (newProgress >= 100) {
             setIsPlaying(false);
-            handleComplete();
+            // Use setTimeout to ensure state updates complete before navigation
+            setTimeout(() => {
+              handleComplete();
+            }, 100);
             return 100;
           }
           return newProgress;

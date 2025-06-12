@@ -62,17 +62,15 @@ export default function ExerciseDetail() {
   };
 
   const handleCompleteExercise = () => {
-    // Store completion data
-    const completions = JSON.parse(localStorage.getItem('exerciseCompletions') || '[]');
-    const newCompletion = {
+    // Store completion data temporarily for the completion screen
+    localStorage.setItem('tempCompletionData', JSON.stringify({
       exerciseId: exercise.id,
-      completedAt: new Date().toISOString(),
       duration: exercise.duration
-    };
-    completions.push(newCompletion);
-    localStorage.setItem('exerciseCompletions', JSON.stringify(completions));
+    }));
     
     setShowPlayer(false);
+    // Navigate to completion screen
+    window.location.href = '/exercise-complete';
   };
 
   if (!exercise) {
