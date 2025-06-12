@@ -117,18 +117,20 @@ export default function Home() {
       {/* Quick Actions */}
       <div className="space-y-3">
         <h2 className="text-lg font-semibold text-[var(--text-soft)]">Start Your Day</h2>
-        <Card className="p-4 shadow-sm flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-              <Smile className="w-6 h-6 text-primary" />
+        <Link href="/exercise-player">
+          <Card className="p-4 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Smile className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <div className="font-medium text-[var(--text-soft)]">Try Your First Exercise</div>
+                <div className="text-sm text-[var(--text-muted)]">5 min • Perfect for beginners</div>
+              </div>
             </div>
-            <div>
-              <div className="font-medium text-[var(--text-soft)]">Morning Meditation</div>
-              <div className="text-sm text-[var(--text-muted)]">5 min • Beginner</div>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
-        </Card>
+            <ChevronRight className="w-5 h-5 text-[var(--text-muted)]" />
+          </Card>
+        </Link>
       </div>
     </div>
   );

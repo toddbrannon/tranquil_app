@@ -16,6 +16,7 @@ import Assessment from "@/pages/Assessment";
 import TimePreference from "@/pages/TimePreference";
 import NotificationPermission from "@/pages/NotificationPermission";
 import PaywallModal from "@/pages/PaywallModal";
+import ExercisePlayer from "@/pages/ExercisePlayer";
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
         <Route path="/time-preference" component={TimePreference} />
         <Route path="/notifications" component={NotificationPermission} />
         <Route path="/paywall" component={PaywallModal} />
+        <Route path="/exercise-player" component={ExercisePlayer} />
         <Route path="/assessment" component={Assessment} />
         <Route path="/home">
           <main className="flex-1 pb-20 overflow-y-auto">
