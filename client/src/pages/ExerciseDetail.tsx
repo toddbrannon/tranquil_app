@@ -1,0 +1,168 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ArrowLeft, Play, Clock, User, Lock, Star } from "lucide-react";
+import { Link, useParams } from "wouter";
+import exercisesData from "@/data/exercises.json";
+
+interface Exercise {
+  id: string;
+  title: string;
+  duration: number;
+  description: string;
+  instructor: string;
+  category: string;
+  section: string;
+  backgroundImage: string;
+  isPremium: boolean;
+  tags: string[];
+  techniques: string[];
+}
+
+export default function ExerciseDetail() {
+  const { id } = useParams();
+  const exercise = exercisesData.exercises.find((ex: Exercise) => ex.id === id) as Exercise;
+
+  if (!exercise) {
+    return (
+      <div className="p-4 text-center">
+        <h2 className="text-lg font-semibold text-[var(--text-muted)]">Exercise not found</h2>
+        <Link href="/exercises">
+          <Button className="mt-4">Back to Exercises</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  const getSectionTitle = (section: string) => {
+    switch (section) {
+      case 'release-tension': return 'Release Tension';
+      case 'vagus-nerve': return 'Vagus Nerve Activation';
+      case 'deep-restore': return 'Deep Restore';
+      default: return section;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'move': return 'bg-blue-100 text-blue-800';
+      case 'breathe': return 'bg-green-100 text-green-800';
+      case 'meditate': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[var(--background)]">
+      {/* Header */}
+      <div className="relative">
+        <img 
+          src={exercise.backgroundImage} 
+          alt={exercise.title}
+          className="w-full h-64 object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        
+        {/* Back Button */}
+        <Link href="/exercises">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 left-4 bg-black/20 hover:bg-black/40 text-white backdrop-blur-sm"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+        </Link>
+
+        {/* Premium Badge */}
+        {exercise.isPremium && (
+          <div className="absolute top-4 right-4 bg-black/70 rounded-full px-3 py-1 flex items-center gap-1">
+            <Lock className="w-3 h-3 text-white" />
+            <span className="text-xs font-medium text-white">Premium</span>
+          </div>
+        )}
+
+        {/* Title Overlay */}
+        <div className="absolute bottom-4 left-4 right-4 text-white">
+          <div className="flex items-center gap-2 mb-2">
+            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(exercise.category)}`}>
+              {exercise.category.charAt(0).toUpperCase() + exercise.category.slice(1)}
+            </span>
+            <span className="text-white/80 text-sm">
+              {getSectionTitle(exercise.section)}
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold">{exercise.title}</h1>
+          <div className="flex items-center gap-4 mt-2 text-white/90">
+            <div className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              <span className="text-sm">{exercise.duration} min</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <User className="w-4 h-4" />
+              <span className="text-sm">{exercise.instructor}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4 space-y-6">
+        {/* Play Button */}
+        <div className="text-center">
+          {exercise.id === 'basic-exercise' ? (
+            <Link href="/exercise-player">
+              <Button size="lg" className="w-full max-w-sm">
+                <Play className="w-5 h-5 mr-2 fill-current" />
+                Start Exercise
+              </Button>
+            </Link>
+          ) : (
+            <Button 
+              size="lg" 
+              className="w-full max-w-sm" 
+              disabled={exercise.isPremium}
+            >
+              <Play className="w-5 h-5 mr-2 fill-current" />
+              {exercise.isPremium ? 'Premium Required' : 'Start Exercise'}
+            </Button>
+          )}
+        </div>
+
+        {/* Description */}
+        <Card className="p-4">
+          <h2 className="font-semibold text-[var(--text-soft)] mb-2">About This Exercise</h2>
+          <p className="text-[var(--text-muted)] leading-relaxed">
+            {exercise.description}
+          </p>
+        </Card>
+
+        {/* Techniques */}
+        <Card className="p-4">
+          <h2 className="font-semibold text-[var(--text-soft)] mb-3">What You'll Learn</h2>
+          <div className="space-y-2">
+            {exercise.techniques.map((technique, index) => (
+              <div key={index} className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-primary" />
+                <span className="text-[var(--text-muted)]">{technique}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Instructor */}
+        <Card className="p-4">
+          <h2 className="font-semibold text-[var(--text-soft)] mb-2">Instructor</h2>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <User className="w-6 h-6 text-primary" />
+            </div>
+            <div>
+              <div className="font-medium text-[var(--text-soft)]">{exercise.instructor}</div>
+              <div className="text-sm text-[var(--text-muted)]">Wellness Expert</div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

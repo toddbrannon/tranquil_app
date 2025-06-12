@@ -1,7 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Play, Star } from "lucide-react";
+import { Play, Clock, Lock } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
+import exercisesData from "@/data/exercises.json";
 
 export default function Exercises() {
   const categories = ["All", "Meditation", "Breathing", "Sleep"];
