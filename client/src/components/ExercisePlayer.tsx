@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Play, Pause, SkipForward, SkipBack, Volume2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useLocation } from "wouter";
 
 interface Exercise {
   id: string;
@@ -27,10 +28,23 @@ interface ExercisePlayerProps {
 }
 
 export default function ExercisePlayer({ exercise, onComplete, onClose }: ExercisePlayerProps) {
+  const [, setLocation] = useLocation();
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+
+  const handleComplete = () => {
+    // Store completion data temporarily for the completion screen
+    localStorage.setItem('tempCompletionData', JSON.stringify({
+      exerciseId: exercise.id,
+      duration: exercise.duration
+    }));
+    
+    // Navigate to completion screen
+    setLocation('/exercise-complete');
+    onComplete();
+  };
 
   // Simulate progress for different formats
   useEffect(() => {
@@ -42,7 +56,7 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
           const newProgress = prev + (100 / (exercise.duration * 60)); // 60 seconds per minute
           if (newProgress >= 100) {
             setIsPlaying(false);
-            onComplete();
+            handleComplete();
             return 100;
           }
           return newProgress;
@@ -62,6 +76,12 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
       setCurrentSlide(Math.min(currentSlide + 1, exercise.slides.length - 1));
     }
     setProgress(Math.min(progress + 10, 100));
+  };
+
+  const skipToEnd = () => {
+    setProgress(100);
+    setIsPlaying(false);
+    handleComplete();
   };
 
   const skipBack = () => {
@@ -220,7 +240,7 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
         <Button variant="outline" onClick={onClose} className="flex-1">
           Close
         </Button>
-        <Button onClick={onComplete} className="flex-1">
+        <Button onClick={skipToEnd} className="flex-1">
           Complete Exercise
         </Button>
       </div>

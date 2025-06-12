@@ -1,8 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, Brain, TrendingUp } from "lucide-react";
+import { Star, Brain, TrendingUp, Flame, Clock, Target, Trophy, Award } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
+import { progressManager, type StreakData, type Milestone } from "@/lib/progress";
 
 interface QuizResult {
   id: string;
