@@ -21,7 +21,7 @@ export default function Profile() {
   const [notificationPermission, setNotificationPermission] = useState<NotificationPreference | null>(null);
 
   const user = {
-    name: "Sarah Johnson",
+    name: "Darren Johnson",
     joinedDate: "Member since March 2024",
   };
 
