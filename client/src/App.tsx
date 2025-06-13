@@ -59,7 +59,12 @@ function Router() {
           </main>
           <BottomNavigation />
         </Route>
-        <Route path="/" component={Splash} />
+        <Route path="/">
+          <main className="flex-1 pb-20 overflow-y-auto">
+            <Home />
+          </main>
+          <BottomNavigation />
+        </Route>
       </Switch>
     </div>
   );
