@@ -252,7 +252,7 @@ export default function ExerciseCompletion() {
 
         {/* Action Buttons */}
         <div className="space-y-3 pb-6">
-          <Link href="/">
+          <Link href="/home">
             <Button className="w-full" size="lg">
               Back to Home
             </Button>
