@@ -151,6 +151,21 @@ export default function ExercisePlayer({ exercise, onComplete, onClose }: Exerci
               <h3 className="text-lg font-semibold text-[var(--text-soft)] mb-2">Guided Movement</h3>
               <p className="text-[var(--text-muted)]">Follow the visual cues and audio guidance</p>
             </div>
+            {exercise.steps && (
+              <Card className="p-4 text-left">
+                <h4 className="font-medium text-[var(--text-soft)] mb-2">Movement Steps:</h4>
+                <ul className="space-y-2 text-sm text-[var(--text-muted)]">
+                  {exercise.steps.map((step, index) => (
+                    <li key={index} className={`flex items-start gap-2 ${Math.floor((progress / 100) * exercise.steps!.length) === index ? 'text-primary font-medium' : ''}`}>
+                      <span className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center text-xs mt-0.5">
+                        {index + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
           </div>
         );
 
