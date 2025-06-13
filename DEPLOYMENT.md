@@ -32,22 +32,27 @@
 
 1. **Repository Setup**
    - Push code to GitHub repository
-   - Ensure all files are committed
+   - Ensure all files are committed (including routing fix and postbuild.js)
 
 2. **Render Service Creation**
    - Create new Web Service on Render.com
    - Connect GitHub repository
    - Render auto-detects `render.yaml`
 
-3. **Automatic Configuration**
-   - Build: `npm install && npm run build`
+3. **Fixed Configuration**
+   - Build: `npm install && vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && node postbuild.js`
    - Start: `npm start`
    - Health Check: `/health`
    - Environment: Node.js (Free tier)
 
-4. **Deployment URL**
+4. **Key Fixes Applied**
+   - Root route "/" now points to Home instead of Splash screen
+   - Static files correctly copied to server/public for production serving
+   - Proper SPA fallback routing configured
+
+5. **Deployment URL**
    - Will be available at: `https://tranquil-app.onrender.com`
-   - Or custom domain if configured
+   - Should show the main app interface instead of "Not Found"
 
 ## Post-Deployment Testing
 
