@@ -56,14 +56,18 @@ export default function ExerciseCompletion() {
       if (result.newMilestones.length > 0) {
         setTimeout(() => setShowMilestones(true), 2000);
       }
-      
-      // Clean up temp data
-      localStorage.removeItem('tempCompletionData');
     } else {
       // Redirect if no completion data
       setLocation('/');
     }
   }, [setLocation]);
+
+  // Clean up completion data when component unmounts or user navigates away
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('tempCompletionData');
+    };
+  }, []);
 
   if (!completionData || !streakData) {
     return <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center">
